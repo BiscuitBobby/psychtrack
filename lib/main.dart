@@ -140,12 +140,12 @@ class Chat extends StatelessWidget {
   Color BiscuitGrey = Color.fromRGBO(47, 47, 47, 1.0);
   final List<Map<String, dynamic>> messages = [
     {'text': 'Hello!', 'isMe': true},
-    {'text': 'Hi there!', 'isMe': false},
+    {'text': 'hello', 'isMe': false},
     {'text': 'How are you?', 'isMe': true},
-    {'text': 'I am good, thanks!', 'isMe': false},
-    {'text': 'What are you up to today?', 'isMe': false},
-    {'text': 'Not much, just coding!', 'isMe': true},
-    {'text': 'That sounds fun!', 'isMe': false},
+    {'text': 'fine', 'isMe': false},
+    {'text': 'wbu?', 'isMe': false},
+    {'text': 'fine', 'isMe': true},
+    {'text': 'I see', 'isMe': false},
   ];
 
 
