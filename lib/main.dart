@@ -102,12 +102,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class Chat extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Messager',
-      home: MainPage(),
-    );
-  }
-}

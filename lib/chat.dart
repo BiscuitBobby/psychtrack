@@ -2,24 +2,24 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class MainPage extends StatefulWidget {
+class Chat extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<Chat> {
   Color biscuitGrey = Color.fromRGBO(47, 47, 47, 1.0);
   final List<Map<String, dynamic>> messages = [];
 
   TextEditingController _messageController = TextEditingController();
 
   void _sendMessage(String message) async {
-    String url = 'http://localhost:3000/chat';
+    String url = 'https://react.biscuitbobby.me/chat';
     Map<String, String> headers = {'Content-Type': 'application/json'};
     Map<String, dynamic> body = {"text": message};
 
     setState(() {
-      messages.add({'text': message, 'isMe': true});
+      messages.add({'text': message, 'isMe': true, 'icon':'assets/user.png'});
     });
     _messageController.clear();
 
@@ -30,7 +30,7 @@ class _MainPageState extends State<MainPage> {
       String responseMessage = responseData['text'];
 
       setState(() {
-        messages.add({'text': responseMessage, 'isMe': false});
+        messages.add({'text': responseMessage, 'isMe': false, 'icon':'assets/logo.png'});
       });
 
       _messageController.clear();
@@ -44,6 +44,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(),
       body: Container(
         color: biscuitGrey,
         child: Column(
@@ -55,17 +56,48 @@ class _MainPageState extends State<MainPage> {
                   final message = messages[index];
                   return Container(
                     alignment: message['isMe'] ? Alignment.centerRight : Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: message['isMe'] ? Colors.green[300] : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                      child: Text(
-                        message['text'],
-                        style: TextStyle(fontSize: 16.0),
-                      ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (!message['isMe'])
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: CircleAvatar(
+                                radius: 21.0,
+                                backgroundImage: AssetImage(
+                                  message['icon'],
+                                ),
+                              ),
+                            ),
+                          Expanded(
+                              child: Container(
+                              alignment: message['isMe'] ? Alignment.centerRight : Alignment.centerLeft,
+                              padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                              child: Container(
+                                  constraints: BoxConstraints(
+                                    maxWidth: MediaQuery.of(context).size.width-125,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: message['isMe'] ? Colors.green[300] : Colors.grey[300],
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+
+                                  child: Text(
+                                    message['text'],
+                                    style: TextStyle(fontSize: 16.0),)))),
+                          if (message['isMe'])
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: CircleAvatar(
+                                radius: 21.0,
+                                backgroundImage: AssetImage(
+                                message['icon'],
+                                ),
+                              ),
+                            ),
+                        ]
                     ),
                   );
                 },
