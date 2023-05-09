@@ -11,6 +11,11 @@ void main() async {
   );
 }
 
+void logout() {
+  //logout code
+  print("logout");
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   // This widget is the root of your application.
@@ -34,8 +39,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Color BiscuitGrey = Color.fromRGBO(47, 47, 47, 1.0);
+  Color BiscuitGrey = const Color.fromRGBO(47, 47, 47, 1.0);
   Color BiscuitOrange = const Color.fromRGBO(240, 174, 131, 1.0);
+
   String _getGreeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -62,21 +68,23 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     } catch (e) {
       setState(() {
-        print('error getting status');
+        print('error getting server status');
         _isServerOnline = false;
       });
     }
   }
+  
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
     _checkServerStatus();
     final List<DateTime> dates = [
-      now.subtract(Duration(days: 1)),
+      now.subtract(const Duration(days: 1)),
       now,
-      now.add(Duration(days: 1)),
-      now.add(Duration(days: 2)),
+      now.add(const Duration(days: 1)),
+      now.add(const Duration(days: 2)),
     ];
+    //Color temp = _isServerOnline ? Colors.green : Colors.black;
     return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -98,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height/1.5,
-                        margin: EdgeInsets.all(0),
+                        margin: const EdgeInsets.all(0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           color: BiscuitGrey,
@@ -153,10 +161,11 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Row(
                               children: [
+                                const Padding(padding: EdgeInsets.symmetric(vertical: 65)),
                                 Container(
-                                  height: 30,
+                                  height: 35,
                                   width: MediaQuery.of(context).size.width/4,
-                                  margin: const EdgeInsets.all(40),
+                                  margin: const EdgeInsets.symmetric(horizontal: 40),
                                   padding: const EdgeInsets.symmetric(vertical: 2),
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30),
@@ -166,13 +175,13 @@ class _MyHomePageState extends State<MyHomePage> {
                                     TimeOfDay.now().format(context),
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 20,
                                       color: Colors.white,
                                     ),
                                   ),
                                 ),
                                 Container(
-                                  height: 30,
+                                  height: 35,
                                   padding: const EdgeInsets.symmetric(vertical: 2),
                                   width: MediaQuery.of(context).size.width/2,
                                   decoration: BoxDecoration(
@@ -181,11 +190,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                       color: Colors.white
                                   ),
                                   child: Text(
-                                    _isServerOnline ? 'Server status: Active' : 'Server status: Offline',
+                                    'Server status: ${_isServerOnline ? 'Online' : 'Offline'}',
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
+                                      fontSize: 20.0,
                                       color: Colors.black,
                                     ),
                                   ),
@@ -195,9 +204,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             Row(
                               children: [
                                 Container(
-                                  padding: EdgeInsets.all(30.0),
+                                  padding: const EdgeInsets.symmetric(horizontal: 30),
                                   child: Container(
-                                    height: 90,
+                                    height: 100,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(20)),
@@ -211,28 +220,28 @@ class _MyHomePageState extends State<MyHomePage> {
                                               child: Column(
                                                 children: [
                                                   Container(
-                                                    width: isToday?MediaQuery.of(context).size.width/7 : MediaQuery.of(context).size.width/13,
+                                                    width: isToday?MediaQuery.of(context).size.width/4.9 : MediaQuery.of(context).size.width/6,
                                                     decoration: BoxDecoration(
                                                       color: isToday ? BiscuitOrange : null,
                                                       borderRadius: BorderRadius.circular(12.0),
                                                     ),
-                                                    height: 75,
+                                                    height: 85,
                                                     child: Column(
                                                       children: [
-                                                        Padding(padding: const EdgeInsets.symmetric(vertical: 6),),
+                                                        const Padding(padding: EdgeInsets.symmetric(vertical: 6)),
                                                         Text(
                                                           DateFormat('EEEE').format(date)[0]+DateFormat('EEEE').format(date)[1]+DateFormat('EEEE').format(date)[2],
                                                           style: TextStyle(
-                                                            fontSize: 14.0,
+                                                            fontSize: 21.0,
                                                             fontWeight: FontWeight.bold,
                                                             color: isToday ? Colors.white : null,
                                                           ),
                                                         ),
-                                                        Padding(padding: const EdgeInsets.symmetric(vertical: 2),),
+                                                        const Padding(padding: EdgeInsets.symmetric(vertical: 2),),
                                                         Text(
                                                           DateFormat('d').format(date),
                                                           style: TextStyle(
-                                                            fontSize: 26.0,
+                                                            fontSize: 32.0,
                                                             fontWeight: FontWeight.bold,
                                                             color: isToday ? Colors.white : null,
                                                           ),
@@ -249,18 +258,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  height: 100,
-                                  width: MediaQuery.of(context).size.width/3.8,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(color: Colors.white, width: 2),
-                                  ),
-                                  child: Text('.'
-                                  ),
-                                ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -288,6 +287,40 @@ class _MyHomePageState extends State<MyHomePage> {
                           scale: 10),
                     ),
                   ),
+                  Positioned(
+                    //top: 10,
+                    bottom: MediaQuery.of(context).size.height/9,
+                    right: 50 ,
+                    child: Row(
+                      children: [
+                        Column(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                            ),
+                            TextButton(
+                              onPressed: () { logout(); },
+                              child: const Text(
+                                'Logout',
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    //fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.exit_to_app, size: 40,),
+                          color: Colors.white,
+                          onPressed: () {
+                            logout();
+                          },
+                        ),
+                      ],
+                    )
+                  )
                 ],
               ),
             ]
