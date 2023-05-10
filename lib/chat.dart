@@ -1,8 +1,8 @@
-import 'dart:async';
 import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+
 bool isTyping = false;
 bool isTyping0 = false;
 bool isTyping1 = false;
@@ -27,7 +27,7 @@ class _MainPageState extends State<Chat> {
     Map<String, dynamic> body = {"text": message};
 
     setState(() {
-      messages.add({'text': message, 'isMe': true, 'icon':'assets/user.png'});
+      messages.add({'text': message, 'isMe': true, 'icon': 'assets/user.png'});
     });
     _messageController.clear();
 
@@ -49,24 +49,31 @@ class _MainPageState extends State<Chat> {
     Timer blink1 = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       Future.delayed(const Duration(milliseconds: 250)).then((value) {
         setState(() {
-          isTyping1 = !isTyping1;});
+          isTyping1 = !isTyping1;
+        });
       });
     });
     Timer blink2 = Timer.periodic(const Duration(milliseconds: 500), (timer) {
       Future.delayed(const Duration(milliseconds: 450)).then((value) {
         setState(() {
-          isTyping2 = !isTyping2;});
+          isTyping2 = !isTyping2;
+        });
       });
     });
 
-    http.Response response = await http.post(Uri.parse(url), headers: headers, body: json.encode(body));
+    http.Response response = await http.post(Uri.parse(url),
+        headers: headers, body: json.encode(body));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = json.decode(response.body);
       String responseMessage = responseData['text'];
 
       setState(() {
-        messages.add({'text': responseMessage, 'isMe': false, 'icon':'assets/logo.png'});
+        messages.add({
+          'text': responseMessage,
+          'isMe': false,
+          'icon': 'assets/logo.png'
+        });
       });
 
       _messageController.clear();
@@ -80,7 +87,11 @@ class _MainPageState extends State<Chat> {
       });
     } else {
       setState(() {
-        messages.add({'text': 'Unable to reach server \n[Error: ${response.statusCode}]', 'isMe': false, 'icon':'assets/logo.png'});
+        messages.add({
+          'text': 'Unable to reach server \n[Error: ${response.statusCode}]',
+          'isMe': false,
+          'icon': 'assets/logo.png'
+        });
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _scrollController.animateTo(
@@ -102,7 +113,10 @@ class _MainPageState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: biscuitGrey,),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: biscuitGrey,
+      ),
       body: Container(
         color: biscuitGrey,
         child: Column(
@@ -114,8 +128,11 @@ class _MainPageState extends State<Chat> {
                 itemBuilder: (context, index) {
                   final message = messages[index];
                   return Container(
-                    alignment: message['isMe'] ? Alignment.centerRight : Alignment.centerLeft,
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                    alignment: message['isMe']
+                        ? Alignment.centerRight
+                        : Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 4.0),
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -131,24 +148,31 @@ class _MainPageState extends State<Chat> {
                             ),
                           Expanded(
                               child: Container(
-                                  alignment: message['isMe'] ? Alignment.centerRight : Alignment.centerLeft,
-                                  padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+                                  alignment: message['isMe']
+                                      ? Alignment.centerRight
+                                      : Alignment.centerLeft,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 4.0),
                                   child: Container(
                                       constraints: BoxConstraints(
-                                        maxWidth: MediaQuery.of(context).size.width-125,
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width -
+                                                125,
                                       ),
                                       decoration: BoxDecoration(
-                                        color: message['isMe'] ? BiscuitOrange : Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(8.0),
+                                        color: message['isMe']
+                                            ? BiscuitOrange
+                                            : Colors.grey[300],
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                       ),
-                                      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0, vertical: 8.0),
                                       child: Text(
                                         message['text'],
-                                        style: TextStyle(fontSize: 16.0),)))),
-
-                        ]
-                    ),
+                                        style: TextStyle(fontSize: 16.0),
+                                      )))),
+                        ]),
                   );
                 },
               ),
@@ -157,7 +181,9 @@ class _MainPageState extends State<Chat> {
               visible: isTyping,
               child: Row(
                 children: [
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 8, vertical: 15)),
+                  const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 15)),
                   Visibility(
                     visible: isTyping0,
                     child: Container(
@@ -170,7 +196,6 @@ class _MainPageState extends State<Chat> {
                       ),
                     ),
                   ),
-
                   Visibility(
                     visible: isTyping1,
                     child: Container(
@@ -183,7 +208,6 @@ class _MainPageState extends State<Chat> {
                       ),
                     ),
                   ),
-
                   Visibility(
                     visible: isTyping2,
                     child: Container(
@@ -196,7 +220,6 @@ class _MainPageState extends State<Chat> {
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),
@@ -234,7 +257,9 @@ class _MainPageState extends State<Chat> {
                       },
                     ),
                   ),
-                  const Padding(padding: EdgeInsets.symmetric(horizontal: 2),)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2),
+                  )
                 ],
               ),
             ),

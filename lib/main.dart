@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'chat.dart';
-import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:psychtrack/chat.dart';
+import 'package:psychtrack/login.dart';
+import 'package:psychtrack/signup.dart';
+import 'package:psychtrack/home.dart';
+import 'package:psychtrack/Authpage.dart';
+import 'package:psychtrack/Verifyemailid.dart';
 
 void main() async {
-  runApp(
-    const MaterialApp(
-      home: MyApp(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    navigatorKey: navigatorkey,
+    home: const MainPage(),
+  ));
 }
 
+<<<<<<< HEAD
 void logout() {
   //logout code
   print("logout");
@@ -327,5 +335,29 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
+=======
+final navigatorkey = GlobalKey<NavigatorState>();
+
+class MainPage extends StatelessWidget {
+  const MainPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Center(child: Text('Something went wrong'));
+        } else if (snapshot.hasData) {
+          return Home();
+        } else {
+          return AuthPage();
+        }
+      },
+    ));
+>>>>>>> 96c85cb (fin)
   }
 }
